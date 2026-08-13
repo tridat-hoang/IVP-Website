@@ -67,20 +67,6 @@ IVP/
 
 ---
 
-## ▶️ Chạy thử & Đưa lên mạng
-
-**Xem thử trên máy:** mở trực tiếp file `index.html` bằng trình duyệt.
-
-**Đưa lên mạng (miễn phí, nhanh nhất):**
-1. Vào [app.netlify.com/drop](https://app.netlify.com/drop)
-2. Kéo-thả thư mục web (các file `.html`, `styles.css`, `lang.js` và thư mục `assets/`) vào trang.
-3. Web online ngay với HTTPS — sau đó có thể gắn tên miền riêng.
-
-> Khi đưa lên mạng **không cần** upload file `.docx` và thư mục `docs/` (tài liệu nội bộ, dung lượng lớn).
-> Form liên hệ hoạt động qua **Netlify Forms** khi deploy trên Netlify.
-
----
-
 ## 🌍 Cơ chế song ngữ
 
 Mỗi phần tử văn bản dùng cặp thuộc tính:
