@@ -1,0 +1,7 @@
+# Backup original images (not needed on web)
+assets/images_original/
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
