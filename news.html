@@ -126,8 +126,9 @@
     <h2 id="newsDetailTitle"></h2>
     <p class="news-detail-date" id="newsDetailDate"></p>
     <div class="news-detail-body" id="newsDetailBody"></div>
-    <a id="newsVideoLink" class="news-video-link" href="#" target="_blank" rel="noopener noreferrer" hidden data-lang-vi="Xem video" data-lang-en="Watch video">Xem video</a>
     <div id="newsExtraMedia" class="news-extra-media" hidden></div>
+    <div id="newsPdfViewer" hidden></div>
+    <a id="newsVideoLink" class="news-video-link" href="#" target="_blank" rel="noopener noreferrer" hidden data-lang-vi="Xem video" data-lang-en="Watch video">Xem video</a>
     <button class="news-back-btn" type="button" id="newsBackBtn" data-lang-vi="Quay lại danh sách" data-lang-en="Back to list">Quay lại danh sách</button>
   </section>
 </main>
@@ -306,6 +307,7 @@ function getVideoEmbedHtml(item){
   const extraMedia = document.getElementById('newsExtraMedia');
   const backBtn = document.getElementById('newsBackBtn');
 
+  const pdfViewer = document.getElementById('newsPdfViewer');
   var currentNewsIndex = -1;
 
   function renderNewsDetail(index) {
@@ -332,6 +334,19 @@ function getVideoEmbedHtml(item){
       extraMedia.innerHTML = '';
       videoLink.hidden = true;
       videoLink.href = '#';
+    }
+
+    if (item.pdfUrl) {
+      pdfViewer.hidden = false;
+      pdfViewer.innerHTML = `
+        <iframe src="${item.pdfUrl}" width="100%" height="600px" style="border:none; margin-top:20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></iframe>
+        <div style="margin-top:15px; text-align:center;">
+          <a href="${item.pdfUrl}" target="_blank" download class="ct-btn ct-mes" style="display:inline-block; text-decoration:none; color:white; background:var(--primary); padding:10px 20px; border-radius:30px;" data-lang-vi="Tải tài liệu PDF" data-lang-en="Download PDF">Tải tài liệu PDF</a>
+        </div>
+      `;
+    } else {
+      pdfViewer.hidden = true;
+      pdfViewer.innerHTML = '';
     }
 
     detail.hidden = false;
