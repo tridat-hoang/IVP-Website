@@ -361,9 +361,11 @@ function getVideoEmbedHtml(item){
     if (item.pdfUrl) {
       pdfViewer.hidden = false;
       pdfViewer.innerHTML = `
-        <iframe src="${item.pdfUrl}" width="100%" height="600px" style="border:none; margin-top:20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></iframe>
-        <div style="margin-top:15px; text-align:center;">
-          <a href="${item.pdfUrl}" target="_blank" download class="ct-btn ct-mes" style="display:inline-block; text-decoration:none; color:white; background:var(--primary); padding:10px 20px; border-radius:30px;" data-lang-vi="Tải tài liệu PDF" data-lang-en="Download PDF">Tải tài liệu PDF</a>
+        <div style="margin-top:25px; margin-bottom:20px; text-align:center;">
+          <a href="${item.pdfUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:var(--primary); font-weight:600; font-size:1.1rem; padding:12px 24px; border:2px solid var(--primary); border-radius:8px; transition:all 0.3s;" onmouseover="this.style.background='var(--primary)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='var(--primary)';">
+            <span style="font-size:1.5rem;">📄</span>
+            <span data-lang-vi="Nhấn vào đây để xem và tải tài liệu PDF" data-lang-en="Click here to view and download PDF">Nhấn vào đây để xem và tải tài liệu PDF</span>
+          </a>
         </div>
       `;
     } else {
