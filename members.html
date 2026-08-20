@@ -46,7 +46,7 @@
       </div>
       <a href="news.html" data-lang-vi="Tin tức" data-lang-en="News">Tin tức</a>
       <a class="active" href="members.html" data-lang-vi="Nông Trang" data-lang-en="Farm">Nông Trang</a>
-      <a href="khcn.html" data-lang-vi="Thông tin KHCN" data-lang-en="S&T Info">Thông tin KHCN</a>
+      <a href="khcn.html" data-lang-vi="Thông tin KHCN" data-lang-en="R&D Info">Thông tin KHCN</a>
       <a href="contacts.html" data-lang-vi="Liên hệ" data-lang-en="Contact">Liên hệ</a>
     </nav>
   </div>
@@ -330,13 +330,29 @@ function renderFarmDetail(btn, index) {
         activeInlineDetail = null;
         activeFarmIndex = null;
         btn.classList.remove('open');
+        history.pushState(null, null, window.location.pathname);
         return;
       }
       document.querySelectorAll('.farm-link.open').forEach(link => link.classList.remove('open'));
       if (activeInlineDetail) activeInlineDetail.remove();
 
       renderFarmDetail(btn, index);
+      history.pushState(null, null, '#post-' + index);
     });
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash;
+    if (hash.startsWith('#post-')) {
+      const idx = parseInt(hash.replace('#post-', ''), 10);
+      if (!isNaN(idx) && idx >= 0 && idx < farmItems.length) {
+        const btn = document.querySelector('.farm-link[data-item="' + idx + '"]');
+        if (btn) {
+          renderFarmDetail(btn, idx);
+          setTimeout(() => btn.scrollIntoView({behavior:'smooth', block:'start'}), 300);
+        }
+      }
+    }
   });
 })();
 
