@@ -192,6 +192,24 @@ function getVideoEmbedHtml(item){
   return '';
 }
 
+
+function ivpSlugify(text) {
+  if (!text) return '';
+  return text.toString().toLowerCase()
+    .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+    .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+    .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+    .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+    .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+    .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+    .replace(/đ/g, "d")
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
+
 (function(){
   const list = document.getElementById('khcnList');
   const detail = document.getElementById('khcnDetail');
@@ -260,8 +278,9 @@ function getVideoEmbedHtml(item){
   document.querySelectorAll('.news-card').forEach(btn => {
     btn.addEventListener('click', () => {
       const index = Number(btn.dataset.khcn);
+      const slug = ivpSlugify(khcnData[index].title);
       renderKhcnDetail(index);
-      history.pushState(null, null, '#post-' + index);
+      history.pushState(null, null, '#' + slug);
       detail.scrollIntoView({behavior:'smooth', block:'start'});
     });
   });
@@ -281,11 +300,20 @@ function getVideoEmbedHtml(item){
 
   // Check URL hash on load
   window.addEventListener('DOMContentLoaded', () => {
-    const hash = window.location.hash;
-    if (hash.startsWith('#post-')) {
-      const idx = parseInt(hash.replace('#post-', ''), 10);
-      if (!isNaN(idx) && idx >= 0 && idx < khcnData.length) {
-        renderKhcnDetail(idx);
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+      let matchIdx = -1;
+      for (let i = 0; i < khcnData.length; i++) {
+        if (ivpSlugify(khcnData[i].title) === hash) {
+          matchIdx = i;
+          break;
+        }
+      }
+      if (matchIdx === -1 && hash.startsWith('post-')) {
+        matchIdx = parseInt(hash.replace('post-', ''), 10);
+      }
+      if (matchIdx >= 0 && matchIdx < khcnData.length) {
+        renderKhcnDetail(matchIdx);
         setTimeout(() => detail.scrollIntoView({behavior:'smooth', block:'start'}), 300);
       }
     }
@@ -311,6 +339,24 @@ function enablePreviewableImages(){
       document.body.classList.add('no-scroll');
     }, true);
   });
+}
+
+
+function ivpSlugify(text) {
+  if (!text) return '';
+  return text.toString().toLowerCase()
+    .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+    .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+    .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+    .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+    .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+    .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+    .replace(/đ/g, "d")
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
 }
 
 (function(){

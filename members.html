@@ -321,6 +321,24 @@ function renderFarmDetail(btn, index) {
   enableFarmPreview();
 }
 
+
+function ivpSlugify(text) {
+  if (!text) return '';
+  return text.toString().toLowerCase()
+    .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+    .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+    .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+    .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+    .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+    .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+    .replace(/đ/g, "d")
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
+
 (function(){
   document.querySelectorAll('.farm-link').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -337,18 +355,28 @@ function renderFarmDetail(btn, index) {
       if (activeInlineDetail) activeInlineDetail.remove();
 
       renderFarmDetail(btn, index);
-      history.pushState(null, null, '#post-' + index);
+      const slug = ivpSlugify(farmItems[index].title);
+      history.pushState(null, null, '#' + slug);
     });
   });
 
   window.addEventListener('DOMContentLoaded', () => {
-    const hash = window.location.hash;
-    if (hash.startsWith('#post-')) {
-      const idx = parseInt(hash.replace('#post-', ''), 10);
-      if (!isNaN(idx) && idx >= 0 && idx < farmItems.length) {
-        const btn = document.querySelector('.farm-link[data-item="' + idx + '"]');
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+      let matchIdx = -1;
+      for (let i = 0; i < farmItems.length; i++) {
+        if (ivpSlugify(farmItems[i].title) === hash) {
+          matchIdx = i;
+          break;
+        }
+      }
+      if (matchIdx === -1 && hash.startsWith('post-')) {
+        matchIdx = parseInt(hash.replace('post-', ''), 10);
+      }
+      if (matchIdx >= 0 && matchIdx < farmItems.length) {
+        const btn = document.querySelector('.farm-link[data-item="' + matchIdx + '"]');
         if (btn) {
-          renderFarmDetail(btn, idx);
+          renderFarmDetail(btn, matchIdx);
           setTimeout(() => btn.scrollIntoView({behavior:'smooth', block:'start'}), 300);
         }
       }
@@ -426,6 +454,24 @@ function enableFarmPreview(){
       document.body.classList.add('no-scroll');
     }, true);
   });
+}
+
+
+function ivpSlugify(text) {
+  if (!text) return '';
+  return text.toString().toLowerCase()
+    .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+    .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+    .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+    .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+    .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+    .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+    .replace(/đ/g, "d")
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
 }
 
 (function(){
